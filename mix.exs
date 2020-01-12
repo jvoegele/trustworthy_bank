@@ -42,7 +42,9 @@ defmodule Trustworthy.MixProject do
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"}
+      {:plug_cowboy, "~> 2.0"},
+      {:dialyxir, "~> 1.0.0-rc.7", only: [:dev], runtime: false},
+      {:credo, "~> 1.1.0", only: [:dev, :test], runtime: false}
     ]
   end
 
