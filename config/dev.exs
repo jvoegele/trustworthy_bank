@@ -1,12 +1,21 @@
 use Mix.Config
 
-# Configure your database
+# Configure the read store database
 config :trustworthy, Trustworthy.Repo,
   username: "postgres",
   password: "postgres",
-  database: "trustworthy_dev",
+  database: "trustworthy_readstore_dev",
   hostname: "localhost",
   show_sensitive_data_on_connection_error: true,
+  pool_size: 10
+
+# Configure the event store database
+config :trustworthy, Trustworthy.EventStore,
+  serializer: Commanded.Serialization.JsonSerializer,
+  username: "postgres",
+  password: "postgres",
+  database: "trustworthy_eventstore_dev",
+  hostname: "localhost",
   pool_size: 10
 
 # For development, we disable any cache and enable

@@ -8,7 +8,19 @@
 use Mix.Config
 
 config :trustworthy,
-  ecto_repos: [Trustworthy.Repo]
+  ecto_repos: [Trustworthy.Repo],
+  event_stores: [Trustworthy.EventStore]
+
+config :trustworthy, Trustworthy.App,
+  event_store: [
+    adapter: Commanded.EventStore.Adapters.EventStore,
+    event_store: Trustworthy.EventStore
+  ],
+  pub_sub: :local,
+  registry: :local
+
+config :commanded,
+  event_store_adapter: Commanded.EventStore.Adapters.EventStore
 
 # Configures the endpoint
 config :trustworthy, TrustworthyWeb.Endpoint,

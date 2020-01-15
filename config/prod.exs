@@ -1,5 +1,23 @@
 use Mix.Config
 
+# Configure the read store database
+config :trustworthy, Trustworthy.Repo,
+  username: "postgres",
+  password: "postgres",
+  database: "trustworthy_readstore",
+  hostname: "localhost",
+  show_sensitive_data_on_connection_error: true,
+  pool_size: 10
+
+# Configure the event store database
+config :trustworthy, Trustworthy.EventStore,
+  serializer: Commanded.Serialization.JsonSerializer,
+  username: "postgres",
+  password: "postgres",
+  database: "trustworthy_eventstore",
+  hostname: "localhost",
+  pool_size: 10
+
 # For production, don't forget to configure the url host
 # to something meaningful, Phoenix uses this information
 # when generating URLs.

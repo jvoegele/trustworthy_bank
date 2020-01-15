@@ -1,12 +1,21 @@
 use Mix.Config
 
-# Configure your database
+# Configure the read store database
 config :trustworthy, Trustworthy.Repo,
   username: "postgres",
   password: "postgres",
-  database: "trustworthy_test",
+  database: "trustworthy_readstore_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+# Configure the event store database
+config :trustworthy, Trustworthy.EventStore,
+  serializer: Commanded.Serialization.JsonSerializer,
+  username: "postgres",
+  password: "postgres",
+  database: "trustworthy_eventstore_test",
+  hostname: "localhost",
+  pool_size: 1
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
