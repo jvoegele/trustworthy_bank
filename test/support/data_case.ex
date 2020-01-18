@@ -24,6 +24,7 @@ defmodule Trustworthy.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import Trustworthy.DataCase
+      import Trustworthy.Factory
     end
   end
 
