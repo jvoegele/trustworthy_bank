@@ -1,5 +1,20 @@
 [
   import_deps: [:ecto, :phoenix],
   inputs: ["*.{ex,exs}", "priv/*/seeds.exs", "{config,lib,test}/**/*.{ex,exs}"],
-  subdirectories: ["priv/*/migrations"]
+  subdirectories: ["priv/*/migrations"],
+  locals_without_parens: [
+    from: 2,
+    field: 2,
+    field: 3,
+    belongs_to: 2,
+    belongs_to: 3,
+    has_one: 3,
+    has_many: 3,
+    embeds_one: 3,
+    embeds_one: 4,
+    embeds_many: 3,
+    embeds_many: 4,
+    many_to_many: 3,
+    validates: 2
+  ]
 ]
