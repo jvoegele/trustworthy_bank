@@ -42,4 +42,18 @@ defmodule Trustworthy.CustomersTest do
 
     assert errors == %{username: ["has already been taken"]}
   end
+
+  @tag :integration
+  test "should fail when username format is invalid and return error" do
+    assert {:error, :validation_failure, errors} = Customers.register_user(build(:user, username: "j@son"))
+
+    assert errors == %{username: ["is invalid"]}
+  end
+
+  @tag :integration
+  test "should convert username to lowercase" do
+    assert {:ok, %User{} = user} = Customers.register_user(build(:user, username: "JASON"))
+
+    assert user.username == "jason"
+  end
 end

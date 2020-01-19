@@ -25,11 +25,18 @@ defmodule Trustworthy.Customers.Commands.RegisterUser do
     string: true,
     by: &UniqueUsername.validate/2
 
-
-    defimpl Trustworthy.Support.Middleware.Uniqueness.UniqueFields do
-      def unique(%{user_uuid: user_uuid}), do: [
-        {:username, "has already been taken", user_uuid},
+  defimpl Trustworthy.Support.Middleware.Uniqueness.UniqueFields do
+    def unique(%{user_uuid: user_uuid}),
+      do: [
+        {:username, "has already been taken", user_uuid}
       ]
-    end
+  end
 
+  def assign_uuid(%__MODULE__{} = command, uuid) when is_binary(uuid) do
+    %{command | user_uuid: uuid}
+  end
+
+  def downcase_username(%__MODULE__{username: username} = command) when is_binary(username) do
+    %{command | username: String.downcase(username)}
+  end
 end

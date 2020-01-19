@@ -19,8 +19,9 @@ defmodule Trustworthy.Customers do
     uuid = UUID.uuid4()
 
     attrs
-    |> Map.put(:user_uuid, uuid)
     |> Commands.RegisterUser.new()
+    |> Commands.RegisterUser.assign_uuid(uuid)
+    |> Commands.RegisterUser.downcase_username()
     |> CommandRouter.dispatch(consistency: :strong)
     |> case do
       :ok -> Repo.fetch(Projections.User, uuid)
