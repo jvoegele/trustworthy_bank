@@ -23,6 +23,7 @@ defmodule TrustworthyWeb do
 
       import Plug.Conn
       import TrustworthyWeb.Gettext
+      import TrustworthyWeb.JWT
       alias TrustworthyWeb.Router.Helpers, as: Routes
     end
   end

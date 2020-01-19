@@ -11,12 +11,21 @@ defmodule TrustworthyWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+
+    plug Guardian.Plug.Pipeline,
+      error_handler: TrustworthyWeb.ErrorHandler,
+      module: Trustworthy.Auth.Guardian
+
+    plug Guardian.Plug.VerifyHeader, realm: "Token"
+    plug Guardian.Plug.LoadResource, allow_blank: true
   end
 
   scope "/api", TrustworthyWeb do
     pipe_through :api
 
     post "/users", UserController, :create
+    get "/user", UserController, :current
+    post "/users/login", SessionController, :create
   end
 
   scope "/", TrustworthyWeb do

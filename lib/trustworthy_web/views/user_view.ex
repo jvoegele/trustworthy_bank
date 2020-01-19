@@ -6,6 +6,10 @@ defmodule TrustworthyWeb.UserView do
     %{users: render_many(users, UserView, "user.json")}
   end
 
+  def render("show.json", %{user: user, jwt: jwt}) do
+    %{user: user |> render_one(UserView, "user.json") |> Map.merge(%{token: jwt})}
+  end
+
   def render("show.json", %{user: user}) do
     %{user: render_one(user, UserView, "user.json")}
   end

@@ -39,6 +39,15 @@ config :trustworthy, TrustworthyWeb.Endpoint,
   render_errors: [view: TrustworthyWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: Trustworthy.PubSub, adapter: Phoenix.PubSub.PG2]
 
+config :trustworthy, Trustworthy.Auth.Guardian,
+  allowed_algos: ["HS512"],
+  verify_module: Guardian.JWT,
+  issuer: "Trustworthy",
+  ttl: {30, :days},
+  allowed_drift: 2000,
+  verify_issuer: true,
+  secret_key: "7RcI1arUWB5BcLbv8D/0SgXswBLPF5rj14XueNJGOvuJ0fGw3NGHvt8mnO+T9JGZ"
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

@@ -39,4 +39,11 @@ defmodule Trustworthy.Customers do
     |> Projections.User.Query.by_username()
     |> Repo.one()
   end
+
+  @doc """
+  Get a single user by their UUID
+  """
+  def user_by_uuid(uuid) when is_binary(uuid) do
+    Repo.get(Projections.User, uuid)
+  end
 end

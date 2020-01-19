@@ -22,6 +22,8 @@ defmodule TrustworthyWeb.ConnCase do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
       import Trustworthy.Factory
+      import Trustworthy.Fixture
+      import TrustworthyWeb.ConnHelpers
       alias TrustworthyWeb.Router.Helpers, as: Routes
 
       # The default endpoint for testing
