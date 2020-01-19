@@ -25,6 +25,12 @@ config :commanded,
 config :commanded_ecto_projections,
   repo: Trustworthy.Repo
 
+config :vex,
+  sources: [
+    Trustworthy.Support.Validators,
+    Vex.Validators
+  ]
+
 # Configures the endpoint
 config :trustworthy, TrustworthyWeb.Endpoint,
   url: [host: "localhost"],

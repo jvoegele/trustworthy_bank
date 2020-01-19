@@ -7,5 +7,7 @@ defmodule Trustworthy.CommandRouter do
   alias Trustworthy.Customers.Commands.RegisterUser
   alias Trustworthy.Customers.Aggregates.User
 
+  middleware Trustworthy.Support.Middleware.Validate
+
   dispatch [RegisterUser], to: User, identity: :user_uuid
 end

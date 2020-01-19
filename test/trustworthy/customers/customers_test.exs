@@ -18,7 +18,7 @@ defmodule Trustworthy.CustomersTest do
       assert {:error, :validation_failure, errors} =
                Customers.register_user(build(:user, username: ""))
 
-      assert errors == %{username: ["can't be empty"]}
+      assert errors == %{username: ["is invalid"]}
     end
   end
 end

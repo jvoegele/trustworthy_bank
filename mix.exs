@@ -50,6 +50,7 @@ defmodule Trustworthy.MixProject do
       {:commanded_ecto_projections, "~> 1.0"},
       {:elixir_uuid, "~> 1.2"},
       {:exconstructor, "~> 1.1"},
+      {:vex, "~> 0.8.0"},
       {:ex_machina, "~> 2.3", only: :test},
       {:dialyxir, "~> 1.0.0-rc.7", only: [:dev], runtime: false},
       {:credo, "~> 1.1.0", only: [:dev, :test], runtime: false}
