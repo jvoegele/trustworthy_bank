@@ -6,9 +6,11 @@ defmodule Trustworthy.Customers.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @primary_key {:uuid, :binary_id, autogenerate: false}
+  @derive {Phoenix.Param, key: :uuid}
   schema "users" do
-    field :hashed_password, :string
     field :username, :string
+    field :hashed_password, :string
 
     timestamps()
   end

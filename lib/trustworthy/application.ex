@@ -5,12 +5,12 @@ defmodule Trustworthy.Application do
 
   def start(_type, _args) do
     children = [
+      # Start the Commanded application
+      Trustworthy.App,
       # Start the Ecto repository
       Trustworthy.Repo,
       # Start the endpoint when the application starts
       TrustworthyWeb.Endpoint,
-      # Start the Commanded application
-      Trustworthy.App
     ]
 
     opts = [strategy: :one_for_one, name: Trustworthy.Supervisor]

@@ -6,7 +6,22 @@ defmodule Trustworthy.Customers do
   import Ecto.Query, warn: false
   alias Trustworthy.Repo
 
+  alias Trustworthy.CommandRouter
   alias Trustworthy.Customers.User
+  alias Trustworthy.Customers.{Aggregates, Commands, Events}
+
+  @type uuid :: String.t()
+  @type username :: String.t()
+
+  @doc """
+  Register a new user.
+  """
+  def register_user(attrs \\ %{}) do
+    attrs
+    |> Map.put(:user_uuid, UUID.uuid4())
+    |> Commands.RegisterUser.new()
+    |> CommandRouter.dispatch()
+  end
 
   @doc """
   Returns the list of users.
