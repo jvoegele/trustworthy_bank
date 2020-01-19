@@ -13,11 +13,16 @@ defmodule TrustworthyWeb.Router do
     plug :accepts, ["json"]
   end
 
+  scope "/api", TrustworthyWeb do
+    pipe_through :api
+
+    post "/users", UserController, :create
+  end
+
   scope "/", TrustworthyWeb do
     pipe_through :browser
 
     get "/", PageController, :index
-    resources "/users", UserController
   end
 
   # Other scopes may use custom stacks.
