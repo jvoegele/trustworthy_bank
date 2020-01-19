@@ -13,7 +13,6 @@ defmodule Trustworthy.CustomersTest do
     end
 
     @tag :integration
-    @tag :wip
     test "should fail with invalid data and return error" do
       assert {:error, :validation_failure, errors} =
                Customers.register_user(build(:user, username: ""))
@@ -55,5 +54,12 @@ defmodule Trustworthy.CustomersTest do
     assert {:ok, %User{} = user} = Customers.register_user(build(:user, username: "JASON"))
 
     assert user.username == "jason"
+  end
+
+  @tag :integration
+  test "should hash password" do
+    params = build(:user)
+    assert {:ok, %User{} = user} = Customers.register_user(params)
+    assert Trustworthy.Auth.validate_password(params.password, user.hashed_password)
   end
 end

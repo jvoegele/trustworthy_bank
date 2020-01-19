@@ -23,5 +23,7 @@ config :trustworthy, TrustworthyWeb.Endpoint,
   http: [port: 4002],
   server: false
 
+config :bcrypt_elixir, :log_rounds, 4
+
 # Print only warnings and errors during test
 config :logger, level: :warn
