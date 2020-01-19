@@ -1,4 +1,4 @@
-defmodule Trustworthy.Customers.User do
+defmodule Trustworthy.Customers.Projections.User do
   @moduledoc """
   Read model projection for users.
   """
@@ -8,7 +8,7 @@ defmodule Trustworthy.Customers.User do
 
   @primary_key {:uuid, :binary_id, autogenerate: false}
   @derive {Phoenix.Param, key: :uuid}
-  schema "users" do
+  schema "customers_users" do
     field :username, :string
     field :hashed_password, :string
 
