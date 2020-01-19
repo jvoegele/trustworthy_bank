@@ -22,6 +22,9 @@ config :trustworthy, Trustworthy.App,
 config :commanded,
   event_store_adapter: Commanded.EventStore.Adapters.EventStore
 
+config :commanded_ecto_projections,
+  repo: Trustworthy.Repo
+
 # Configures the endpoint
 config :trustworthy, TrustworthyWeb.Endpoint,
   url: [host: "localhost"],

@@ -47,6 +47,9 @@ defmodule Trustworthy.MixProject do
       {:commanded, "1.0.0"},
       {:eventstore, "1.0.0", runtime: Mix.env() != :test},
       {:commanded_eventstore_adapter, "1.0.0", runtime: Mix.env() != :test},
+      {:commanded_ecto_projections, "~> 1.0"},
+      {:elixir_uuid, "~> 1.2"},
+      {:exconstructor, "~> 1.1"},
       {:ex_machina, "~> 2.3", only: :test},
       {:dialyxir, "~> 1.0.0-rc.7", only: [:dev], runtime: false},
       {:credo, "~> 1.1.0", only: [:dev, :test], runtime: false}
