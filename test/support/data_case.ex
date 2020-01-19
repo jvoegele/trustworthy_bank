@@ -28,13 +28,8 @@ defmodule Trustworthy.DataCase do
     end
   end
 
-  setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Trustworthy.Repo)
-
-    unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Trustworthy.Repo, {:shared, self()})
-    end
-
+  setup _tags do
+    Trustworthy.Storage.reset!()
     :ok
   end
 

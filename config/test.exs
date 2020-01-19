@@ -6,7 +6,7 @@ config :trustworthy, Trustworthy.Repo,
   password: "postgres",
   database: "trustworthy_readstore_test",
   hostname: "localhost",
-  pool: Ecto.Adapters.SQL.Sandbox
+  pool_size: 1
 
 # Configure the event store database
 config :trustworthy, Trustworthy.EventStore,
