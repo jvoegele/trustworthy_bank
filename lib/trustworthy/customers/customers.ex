@@ -27,4 +27,14 @@ defmodule Trustworthy.Customers do
       error -> error
     end
   end
+
+  @doc """
+  Get an existing user by their username, or return `nil` if not registered
+  """
+  def user_by_username(username) when is_binary(username) do
+    username
+    |> String.downcase()
+    |> Projections.User.Query.by_username()
+    |> Repo.one()
+  end
 end

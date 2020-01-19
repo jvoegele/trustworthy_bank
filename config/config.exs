@@ -28,6 +28,7 @@ config :commanded_ecto_projections,
 config :vex,
   sources: [
     Trustworthy.Support.Validators,
+    Trustworthy.Customers.Validators,
     Vex.Validators
   ]
 

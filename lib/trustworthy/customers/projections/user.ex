@@ -21,4 +21,15 @@ defmodule Trustworthy.Customers.Projections.User do
     |> cast(attrs, [:username, :hashed_password])
     |> validate_required([:username, :hashed_password])
   end
+
+  defmodule Query do
+    @moduledoc false
+    import Ecto.Query
+    alias Trustworthy.Customers.Projections.User
+
+    def by_username(username) do
+      from u in User,
+        where: u.username == ^username
+    end
+  end
 end

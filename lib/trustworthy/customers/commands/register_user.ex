@@ -4,6 +4,7 @@ defmodule Trustworthy.Customers.Commands.RegisterUser do
   """
 
   alias Trustworthy.Customers
+  alias Trustworthy.Customers.Validators.UniqueUsername
 
   @type t :: %__MODULE__{
           user_uuid: Customers.uuid(),
@@ -21,5 +22,14 @@ defmodule Trustworthy.Customers.Commands.RegisterUser do
 
   validates :username,
     format: [with: ~r/^[a-z0-9]+$/, allow_nil: false, allow_blank: false, message: "is invalid"],
-    string: true
+    string: true,
+    by: &UniqueUsername.validate/2
+
+
+    defimpl Trustworthy.Support.Middleware.Uniqueness.UniqueFields do
+      def unique(%{user_uuid: user_uuid}), do: [
+        {:username, "has already been taken", user_uuid},
+      ]
+    end
+
 end

@@ -11,7 +11,8 @@ defmodule Trustworthy.Application do
       Trustworthy.Repo,
       # Start the endpoint when the application starts
       TrustworthyWeb.Endpoint,
-      Trustworthy.Customers.Supervisor
+      Trustworthy.Customers.Supervisor,
+      Trustworthy.Support.Unique,
     ]
 
     opts = [strategy: :one_for_one, name: Trustworthy.Supervisor]
