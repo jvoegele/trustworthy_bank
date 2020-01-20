@@ -12,6 +12,7 @@ defmodule Trustworthy.Application do
       # Start the endpoint when the application starts
       TrustworthyWeb.Endpoint,
       Trustworthy.Customers.Supervisor,
+      Trustworthy.Banking.Supervisor,
       Trustworthy.Support.Unique,
     ]
 

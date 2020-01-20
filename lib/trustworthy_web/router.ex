@@ -26,6 +26,9 @@ defmodule TrustworthyWeb.Router do
     post "/users", UserController, :create
     get "/user", UserController, :current
     post "/users/login", SessionController, :create
+
+    post "/accounts/checking", CheckingAccountController, :create
+    # post "/accounts/savings", SavingsAccountController, :create
   end
 
   scope "/", TrustworthyWeb do

@@ -21,7 +21,7 @@ defmodule TrustworthyWeb.UserControllerTest do
       conn = post(conn, Routes.user_path(conn, :create), user: build(:user, username: ""))
       assert json_response(conn, 422)["errors"] == %{
         "username" => [
-          "can't be empty",
+          "is invalid",
         ]
       }
     end

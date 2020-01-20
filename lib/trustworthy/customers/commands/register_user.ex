@@ -7,14 +7,14 @@ defmodule Trustworthy.Customers.Commands.RegisterUser do
   alias Trustworthy.Customers
   alias Trustworthy.Customers.Validators.UniqueUsername
 
+  defstruct [:user_uuid, :username, :password, :hashed_password]
+
   @type t :: %__MODULE__{
           user_uuid: Customers.uuid(),
           username: Customers.username(),
           password: String.t() | nil,
           hashed_password: String.t()
         }
-
-  defstruct [:user_uuid, :username, :password, :hashed_password]
 
   use ExConstructor
   use Vex.Struct
