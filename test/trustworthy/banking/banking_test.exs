@@ -13,4 +13,14 @@ defmodule Trustworthy.BankingTest do
       assert account.balance == 100 * 100
     end
   end
+
+  describe "open savings account" do
+    @tag :integration
+    test "opens new savings account when given valid data" do
+      params = %{customer_uuid: UUID.uuid4(), initial_balance: 100 * 100}
+      assert {:ok, %Projections.SavingsAccount{} = account} = Banking.open_savings_account(params)
+      assert account.owner == params.customer_uuid
+      assert account.balance == 100 * 100
+    end
+  end
 end

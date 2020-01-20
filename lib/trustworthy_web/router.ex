@@ -28,7 +28,7 @@ defmodule TrustworthyWeb.Router do
     post "/users/login", SessionController, :create
 
     post "/accounts/checking", CheckingAccountController, :create
-    # post "/accounts/savings", SavingsAccountController, :create
+    post "/accounts/savings", SavingsAccountController, :create
   end
 
   scope "/", TrustworthyWeb do

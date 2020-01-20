@@ -21,4 +21,18 @@ defmodule Trustworthy.Banking do
       error -> error
     end
   end
+
+  @spec open_savings_account(map()) :: {:ok, %Projections.SavingsAccount{}} | {:error, reason :: any()}
+  def open_savings_account(attrs) do
+    uuid = UUID.uuid4()
+
+    attrs
+    |> Map.merge(%{account_uuid: uuid, interest_rate: 0.05})
+    |> Commands.OpenSavingsAccount.new()
+    |> CommandRouter.dispatch(consistency: :strong)
+    |> case do
+      :ok -> Repo.fetch(Projections.SavingsAccount, uuid)
+      error -> error
+    end
+  end
 end
