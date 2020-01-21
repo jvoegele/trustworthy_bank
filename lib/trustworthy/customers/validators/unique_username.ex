@@ -6,7 +6,7 @@ defmodule Trustworthy.Customers.Validators.UniqueUsername do
   use Vex.Validator
 
   alias Trustworthy.Customers
-  alias Trustworthy.Customers.Projections.User
+  alias FE.Maybe
 
   def validate(username, context) do
     user_uuid = Map.get(context, :user_uuid)
@@ -18,10 +18,8 @@ defmodule Trustworthy.Customers.Validators.UniqueUsername do
   end
 
   defp username_registered?(username, user_uuid) do
-    case Customers.user_by_username(username) do
-      %User{uuid: ^user_uuid} -> false
-      nil -> false
-      _ -> true
-    end
+    username
+    |> Customers.user_by_username()
+    |> Maybe.unwrap_with(& &1.uuid != user_uuid, false)
   end
 end

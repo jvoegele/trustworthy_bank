@@ -5,6 +5,7 @@ defmodule Trustworthy.Auth do
   """
 
   alias Comeonin.Bcrypt
+  alias FE.Maybe
 
   alias Trustworthy.Customers
   alias Trustworthy.Customers.Projections.User
@@ -19,10 +20,9 @@ defmodule Trustworthy.Auth do
   def validate_password(password, hash), do: Bcrypt.checkpw(password, hash)
 
   defp user_by_username(username) do
-    case Customers.user_by_username(username) do
-      nil -> {:error, :unauthenticated}
-      user -> {:ok, user}
-    end
+    username
+    |> Customers.user_by_username()
+    |> Maybe.to_result(:unauthenticated)
   end
 
   defp check_password(%User{hashed_password: hashed_password} = user, password) do

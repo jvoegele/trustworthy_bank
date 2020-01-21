@@ -7,8 +7,9 @@ defmodule Trustworthy.Banking do
   alias Trustworthy.CommandRouter
   alias Trustworthy.Banking.Commands
   alias Trustworthy.Banking.Projections
+  alias FE.Result
 
-  @spec open_checking_account(map()) :: {:ok, %Projections.CheckingAccount{}} | {:error, reason :: any()}
+  @spec open_checking_account(map()) :: Result.t(%Projections.CheckingAccount{})
   def open_checking_account(attrs) do
     uuid = UUID.uuid4()
 
@@ -22,7 +23,7 @@ defmodule Trustworthy.Banking do
     end
   end
 
-  @spec open_savings_account(map()) :: {:ok, %Projections.SavingsAccount{}} | {:error, reason :: any()}
+  @spec open_savings_account(map()) :: Result.t(%Projections.SavingsAccount{})
   def open_savings_account(attrs) do
     uuid = UUID.uuid4()
 

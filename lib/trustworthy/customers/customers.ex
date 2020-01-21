@@ -8,6 +8,8 @@ defmodule Trustworthy.Customers do
   alias Trustworthy.Repo
   alias Trustworthy.CommandRouter
   alias Trustworthy.Customers.{Commands, Projections}
+  alias FE.Maybe
+  alias FE.Result
 
   @type uuid :: String.t()
   @type username :: String.t()
@@ -15,7 +17,7 @@ defmodule Trustworthy.Customers do
   @doc """
   Register a new user.
   """
-  @spec register_user(map()) :: {:ok, %Projections.User{}} | {:error, reason :: any()}
+  @spec register_user(map()) :: Result.t(%Projections.User{})
   def register_user(attrs \\ %{}) do
     uuid = UUID.uuid4()
 
@@ -30,14 +32,15 @@ defmodule Trustworthy.Customers do
   end
 
   @doc """
-  Get an existing user by their username, or return `nil` if not registered
+  Get an existing user by their username, or return `:nothing` if not registered.
   """
-  @spec user_by_username(username()) :: %Projections.User{} | nil
+  @spec user_by_username(username()) :: Maybe.t(%Projections.User{})
   def user_by_username(username) when is_binary(username) do
     username
     |> String.downcase()
     |> Projections.User.Query.by_username()
     |> Repo.one()
+    |> Maybe.new()
   end
 
   @doc """
