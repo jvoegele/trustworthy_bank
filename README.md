@@ -1,4 +1,8 @@
-# Trustworthy
+# Trustworthy Bank
+
+The online bank you can totally trust!
+
+## Getting started
 
 To start your Phoenix server:
 
