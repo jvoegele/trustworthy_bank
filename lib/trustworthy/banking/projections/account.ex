@@ -6,6 +6,10 @@ defmodule Trustworthy.Banking.Projections.Account do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias Trustworthy.Banking.Projections.{CheckingAccount, SavingsAccount}
+
+  @type account :: %CheckingAccount{} | %SavingsAccount{}
+
   @primary_key {:uuid, :binary_id, autogenerate: false}
   @derive {Phoenix.Param, key: :uuid}
   schema "banking_accounts" do

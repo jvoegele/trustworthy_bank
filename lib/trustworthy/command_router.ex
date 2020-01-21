@@ -4,17 +4,18 @@ defmodule Trustworthy.CommandRouter do
   use Commanded.Commands.Router,
     application: Trustworthy.App
 
-  alias Trustworthy.Customers.Commands.RegisterUser
-  alias Trustworthy.Customers.Aggregates.User
-  alias Trustworthy.Banking.Commands.OpenCheckingAccount
-  alias Trustworthy.Banking.Aggregates.CheckingAccount
-  alias Trustworthy.Banking.Commands.OpenSavingsAccount
-  alias Trustworthy.Banking.Aggregates.SavingsAccount
+  alias Trustworthy.Customers
+  alias Trustworthy.Banking
+  alias Trustworthy.Support.Middleware
 
-  middleware Trustworthy.Support.Middleware.Validate
-  middleware Trustworthy.Support.Middleware.Uniqueness
+  middleware Middleware.Validate
+  middleware Middleware.Uniqueness
 
-  dispatch [RegisterUser], to: User, identity: :user_uuid
-  dispatch [OpenCheckingAccount], to: CheckingAccount, identity: :account_uuid
-  dispatch [OpenSavingsAccount], to: SavingsAccount, identity: :account_uuid
+  dispatch [Customers.Commands.RegisterUser], to: Customers.Aggregates.User, identity: :user_uuid
+
+  dispatch [Banking.Commands.OpenCheckingAccount], to: Banking.Aggregates.CheckingAccount, identity: :account_uuid
+  dispatch [Banking.Commands.OpenSavingsAccount], to: Banking.Aggregates.SavingsAccount, identity: :account_uuid
+
+  dispatch [Banking.Commands.DepositMoney.ToChecking], to: Banking.Aggregates.CheckingAccount, identity: :account_uuid
+  dispatch [Banking.Commands.DepositMoney.ToSavings], to: Banking.Aggregates.SavingsAccount, identity: :account_uuid
 end

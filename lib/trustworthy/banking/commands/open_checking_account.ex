@@ -16,8 +16,6 @@ defmodule Trustworthy.Banking.Commands.OpenCheckingAccount do
   use Vex.Struct
 
   validates :customer_uuid, uuid: true
-
   validates :account_uuid, uuid: true
-
   validates :initial_balance, number: [greater_than_or_equal_to: 0]
 end

@@ -32,4 +32,15 @@ defmodule Trustworthy.Banking.Projectors.Accounts do
       interest_rate: event.interest_rate
     })
   end
+
+  project %Events.MoneyDeposited{} = event, fn multi ->
+    projection =
+      case event.account_type do
+        "checking" -> Projections.CheckingAccount
+        "savings" -> Projections.SavingsAccount
+      end
+
+    account = Trustworthy.Repo.get(projection, event.account_uuid)
+    Multi.update(multi, :update_balance, Ecto.Changeset.change(account, balance: event.new_balance))
+  end
 end

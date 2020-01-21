@@ -26,7 +26,7 @@ defmodule Trustworthy.Customers do
     |> Commands.RegisterUser.new()
     |> CommandRouter.dispatch(consistency: :strong)
     |> case do
-      :ok -> Repo.fetch(Projections.User, uuid)
+      :ok -> Projections.User |> Repo.fetch(uuid) |> Maybe.to_result(:not_found)
       error -> error
     end
   end
