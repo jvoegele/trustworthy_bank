@@ -23,12 +23,12 @@ defmodule Trustworthy.Banking.Aggregates.CheckingAccount do
     }
   end
 
-  def execute(%__MODULE__{uuid: uuid} = account, %Commands.DepositMoney.ToChecking{account_uuid: uuid, amount: amount} = command) do
+  def execute(%__MODULE__{uuid: uuid} = account, %Commands.DepositMoney.ToChecking{account_uuid: uuid, amount: amount}) do
     if is_integer(amount) and amount > 0 do
       %Events.MoneyDeposited{
         account_uuid: uuid,
         account_type: "checking",
-        amount: command.amount,
+        amount: amount,
         new_balance: account.balance + amount
       }
     else
