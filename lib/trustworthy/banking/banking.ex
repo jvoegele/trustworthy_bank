@@ -55,13 +55,14 @@ defmodule Trustworthy.Banking do
   def deposit(account_uuid, amount) do
     account_uuid
     |> get_account()
-    |> Maybe.and_then(fn %account_type{} = account ->
+    |> Maybe.to_result(:not_found)
+    |> Result.and_then(fn %account_type{} = account ->
       account
       |> Commands.DepositMoney.new(%{account_uuid: account_uuid, amount: amount})
       |> CommandRouter.dispatch(consistency: :strong)
       |> case do
-        :ok -> Repo.fetch(account_type, account_uuid) |> Maybe.to_result(:not_found)
-        error -> error
+        :ok -> account_type |> Repo.fetch(account_uuid) |> Maybe.to_result(:not_found)
+        error -> Result.error(error)
       end
     end)
   end
