@@ -55,6 +55,12 @@ defmodule Trustworthy.Banking do
     end
   end
 
+  def transfer(src_uuid, dest_uuid, amount) do
+    %{source_account_uuid: src_uuid, destination_account_uuid: dest_uuid, amount: amount}
+    |> Commands.TransferFunds.new()
+    |> CommandRouter.dispatch()
+  end
+
   defp lookup_account(%Projections.Account{uuid: uuid, account_type: account_type}) do
     projection =
       case account_type do

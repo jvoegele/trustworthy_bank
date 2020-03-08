@@ -43,4 +43,22 @@ defmodule Trustworthy.Banking.Projectors.Accounts do
 
     Multi.update(multi, :update_balance, Ecto.Changeset.change(account, balance: new_balance))
   end
+
+  project %Events.FundsTransferredIn{account_detail: %{balance: new_balance}} = event, fn multi ->
+    account =
+      event.account_uuid
+      |> Banking.get_account()
+      |> FE.Maybe.unwrap!()
+
+    Multi.update(multi, :update_balance, Ecto.Changeset.change(account, balance: new_balance))
+  end
+
+  project %Events.FundsTransferredOut{account_detail: %{balance: new_balance}} = event, fn multi ->
+    account =
+      event.account_uuid
+      |> Banking.get_account()
+      |> FE.Maybe.unwrap!()
+
+    Multi.update(multi, :update_balance, Ecto.Changeset.change(account, balance: new_balance))
+  end
 end

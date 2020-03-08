@@ -1,6 +1,8 @@
 defmodule Trustworthy.BankingTest do
   use Trustworthy.DataCase
 
+  import WaitForIt
+
   alias Trustworthy.Banking
   alias Trustworthy.Banking.Projections
 
@@ -74,5 +76,37 @@ defmodule Trustworthy.BankingTest do
       assert {:ok, account} = Banking.deposit(account.uuid, 10_000)
       assert account.balance == params.initial_balance + 10_000
     end
+  end
+
+  describe "transfer between accounts" do
+    @tag :integration
+    test "transfers funds from source account to destination account" do
+      params = %{customer_uuid: UUID.uuid4(), initial_balance: 100_000}
+      {:ok, %Projections.CheckingAccount{} = checking} = Banking.open_checking_account(params)
+      params = %{customer_uuid: UUID.uuid4(), initial_balance: 100_000}
+      {:ok, %Projections.SavingsAccount{} = savings} = Banking.open_savings_account(params)
+
+      assert Banking.transfer(checking.uuid, savings.uuid, 500) == :ok
+
+      case_wait get_account(checking.uuid) do
+        %Projections.CheckingAccount{balance: balance} when balance < 100_000 ->
+          assert balance == 99_500
+      else
+        flunk "funds not transferred out of source account"
+      end
+
+      case_wait get_account(savings.uuid) do
+        %Projections.SavingsAccount{balance: balance} when balance > 100_000 ->
+          assert balance == 100_500
+      else
+        flunk "funds not transferred into destination account"
+      end
+    end
+  end
+
+  defp get_account(uuid) do
+    uuid
+    |> Banking.get_account()
+    |> FE.Maybe.unwrap_or(nil)
   end
 end

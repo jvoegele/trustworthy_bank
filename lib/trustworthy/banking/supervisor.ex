@@ -11,6 +11,11 @@ defmodule Trustworthy.Banking.Supervisor do
   end
 
   def init(_arg) do
-    Supervisor.init([Banking.Projectors.Accounts], strategy: :one_for_one)
+    children = [
+      Banking.Projectors.Accounts,
+      Banking.ProcessManagers.TransferFunds
+    ]
+
+    Supervisor.init(children, strategy: :one_for_one)
   end
 end

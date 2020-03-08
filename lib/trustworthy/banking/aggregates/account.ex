@@ -47,6 +47,49 @@ defmodule Trustworthy.Banking.Aggregates.Account do
     end
   end
 
+  def execute(%Account{uuid: uuid}, %Commands.TransferFunds{source_account_uuid: uuid} = command) do
+    %Events.FundsTransferRequested{
+      transfer_uuid: UUID.uuid4(),
+      source_account_uuid: uuid,
+      destination_account_uuid: command.destination_account_uuid,
+      amount: command.amount
+    }
+  end
+
+  def execute(
+        %Account{uuid: uuid} = account,
+        %Commands.TransferFundsIn{account_uuid: uuid, amount: amount}
+      ) do
+    case Accounts.AccountDetail.transfer_in(account.account_detail, amount) do
+      {:ok, detail} ->
+        %Events.FundsTransferredIn{
+          account_uuid: uuid,
+          amount: amount,
+          account_detail: detail
+        }
+
+      {:error, reason} ->
+        {:error, reason}
+    end
+  end
+
+  def execute(
+        %Account{uuid: uuid} = account,
+        %Commands.TransferFundsOut{account_uuid: uuid, amount: amount}
+      ) do
+    case Accounts.AccountDetail.transfer_out(account.account_detail, amount) do
+      {:ok, detail} ->
+        %Events.FundsTransferredOut{
+          account_uuid: uuid,
+          amount: amount,
+          account_detail: detail
+        }
+
+      {:error, reason} ->
+        {:error, reason}
+    end
+  end
+
   ## Event handlers
 
   def apply(%Account{uuid: nil} = account, %Events.CheckingAccountOpened{} = event) do
@@ -68,6 +111,24 @@ defmodule Trustworthy.Banking.Aggregates.Account do
   end
 
   def apply(%Account{uuid: uuid} = account, %Events.MoneyDeposited{account_uuid: uuid} = event) do
+    %Account{account | account_detail: event.account_detail}
+  end
+
+  def apply(%Account{} = account, %Events.FundsTransferRequested{}) do
+    account
+  end
+
+  def apply(
+        %Account{uuid: uuid} = account,
+        %Events.FundsTransferredIn{account_uuid: uuid} = event
+      ) do
+    %Account{account | account_detail: event.account_detail}
+  end
+
+  def apply(
+        %Account{uuid: uuid} = account,
+        %Events.FundsTransferredOut{account_uuid: uuid} = event
+      ) do
     %Account{account | account_detail: event.account_detail}
   end
 end
