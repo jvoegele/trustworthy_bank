@@ -5,13 +5,6 @@ defmodule Trustworthy.Banking.Commands.OpenCheckingAccount do
 
   defstruct [:customer_uuid, :account_uuid, :initial_balance, :monthly_fee]
 
-  @type t :: %__MODULE__{
-    customer_uuid: Trustworthy.uuid(),
-    account_uuid: Trustworthy.uuid(),
-    initial_balance: non_neg_integer(),
-    monthly_fee: non_neg_integer()
-  }
-
   use ExConstructor
   use Vex.Struct
 

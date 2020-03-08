@@ -8,6 +8,7 @@ defmodule Trustworthy.Banking.Projectors.Accounts do
     name: "Banking.Projectors.Accounts",
     consistency: :strong
 
+  alias Trustworthy.Banking
   alias Trustworthy.Banking.{Events, Projections}
   alias Ecto.Multi
 
@@ -17,7 +18,7 @@ defmodule Trustworthy.Banking.Projectors.Accounts do
     |> Multi.insert(:checking, %Projections.CheckingAccount{
       uuid: event.account_uuid,
       owner: event.owner_uuid,
-      balance: event.balance,
+      balance: event.initial_balance,
       monthly_fee: event.monthly_fee
     })
   end
@@ -28,19 +29,18 @@ defmodule Trustworthy.Banking.Projectors.Accounts do
     |> Multi.insert(:savings, %Projections.SavingsAccount{
       uuid: event.account_uuid,
       owner: event.owner_uuid,
-      balance: event.balance,
-      interest_rate: event.interest_rate
+      balance: event.initial_balance,
+      interest_rate: event.interest_rate,
+      withdrawal_fee: event.withdrawal_fee
     })
   end
 
-  project %Events.MoneyDeposited{} = event, fn multi ->
-    projection =
-      case event.account_type do
-        "checking" -> Projections.CheckingAccount
-        "savings" -> Projections.SavingsAccount
-      end
+  project %Events.MoneyDeposited{account_detail: %{balance: new_balance}} = event, fn multi ->
+    account =
+      event.account_uuid
+      |> Banking.get_account()
+      |> FE.Maybe.unwrap!()
 
-    account = Trustworthy.Repo.get(projection, event.account_uuid)
-    Multi.update(multi, :update_balance, Ecto.Changeset.change(account, balance: event.new_balance))
+    Multi.update(multi, :update_balance, Ecto.Changeset.change(account, balance: new_balance))
   end
 end

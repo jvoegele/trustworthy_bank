@@ -5,16 +5,10 @@ defmodule Trustworthy.Banking do
 
   alias Trustworthy.Repo
   alias Trustworthy.CommandRouter
-  alias Trustworthy.Banking.Aggregates
   alias Trustworthy.Banking.Commands
   alias Trustworthy.Banking.Projections
   alias FE.Result
   alias FE.Maybe
-
-  @typedoc """
-  Sum type representing the different types of banking accounts.
-  """
-  @type account :: Aggregates.CheckingAccount.t() | Aggregates.SavingsAccount.t()
 
   @spec open_checking_account(map()) :: Result.t(%Projections.CheckingAccount{})
   def open_checking_account(attrs) do
@@ -53,18 +47,12 @@ defmodule Trustworthy.Banking do
 
   @spec deposit(Trustworthy.uuid(), pos_integer()) :: Result.t(Projections.Account.account())
   def deposit(account_uuid, amount) do
-    account_uuid
-    |> get_account()
-    |> Maybe.to_result(:not_found)
-    |> Result.and_then(fn %account_type{} = account ->
-      account
-      |> Commands.DepositMoney.new(%{account_uuid: account_uuid, amount: amount})
-      |> CommandRouter.dispatch(consistency: :strong)
-      |> case do
-        :ok -> account_type |> Repo.fetch(account_uuid) |> Maybe.to_result(:not_found)
-        error -> Result.error(error)
-      end
-    end)
+    Commands.DepositMoney.new(%{account_uuid: account_uuid, amount: amount})
+    |> CommandRouter.dispatch(consistency: :strong)
+    |> case do
+      :ok -> account_uuid |> get_account() |> Maybe.to_result(:not_found)
+      error -> Result.error(error)
+    end
   end
 
   defp lookup_account(%Projections.Account{uuid: uuid, account_type: account_type}) do

@@ -12,6 +12,7 @@ defmodule Trustworthy.Banking.Projections.SavingsAccount do
     field :owner, Ecto.UUID
     field :balance, :integer
     field :interest_rate, :decimal
+    field :withdrawal_fee, :integer
 
     timestamps()
   end
@@ -19,7 +20,7 @@ defmodule Trustworthy.Banking.Projections.SavingsAccount do
   @doc false
   def changeset(account, attrs) do
     account
-    |> cast(attrs, [:owner, :balance, :interest_rate])
+    |> cast(attrs, [:owner, :balance, :interest_rate, :withdrawal_fee])
     |> validate_required([:owner, :balance])
   end
 end

@@ -4,5 +4,5 @@ defmodule Trustworthy.Banking.Events.MoneyDeposited do
   """
 
   @derive Jason.Encoder
-  defstruct [:account_uuid, :account_type, :amount, :new_balance]
+  defstruct [:account_uuid, :amount, :account_detail]
 end
