@@ -20,6 +20,6 @@ defmodule Trustworthy.Customers.Validators.UniqueUsername do
   defp username_registered?(username, user_uuid) do
     username
     |> Customers.user_by_username()
-    |> Maybe.unwrap_with(& &1.uuid != user_uuid, false)
+    |> Maybe.unwrap_with(&(&1.uuid != user_uuid), false)
   end
 end

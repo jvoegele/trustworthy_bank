@@ -49,7 +49,7 @@ defmodule Trustworthy.Banking.ProcessManagers.TransferFunds do
       | transfer_uuid: event.transfer_uuid,
         source_account_uuid: event.source_account_uuid,
         destination_account_uuid: event.destination_account_uuid,
-        amount: event.amount,
+        amount: event.amount
     }
   end
 end

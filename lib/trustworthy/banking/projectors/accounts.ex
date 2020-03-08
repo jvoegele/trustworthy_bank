@@ -12,20 +12,26 @@ defmodule Trustworthy.Banking.Projectors.Accounts do
   alias Trustworthy.Banking.{Events, Projections}
   alias Ecto.Multi
 
-  project %Events.CheckingAccountOpened{} = event, fn multi ->
+  project(%Events.CheckingAccountOpened{} = event, fn multi ->
     multi
-    |> Multi.insert(:account, %Projections.Account{uuid: event.account_uuid, account_type: "checking"})
+    |> Multi.insert(:account, %Projections.Account{
+      uuid: event.account_uuid,
+      account_type: "checking"
+    })
     |> Multi.insert(:checking, %Projections.CheckingAccount{
       uuid: event.account_uuid,
       owner: event.owner_uuid,
       balance: event.initial_balance,
       monthly_fee: event.monthly_fee
     })
-  end
+  end)
 
-  project %Events.SavingsAccountOpened{} = event, fn multi ->
+  project(%Events.SavingsAccountOpened{} = event, fn multi ->
     multi
-    |> Multi.insert(:account, %Projections.Account{uuid: event.account_uuid, account_type: "savings"})
+    |> Multi.insert(:account, %Projections.Account{
+      uuid: event.account_uuid,
+      account_type: "savings"
+    })
     |> Multi.insert(:savings, %Projections.SavingsAccount{
       uuid: event.account_uuid,
       owner: event.owner_uuid,
@@ -33,32 +39,35 @@ defmodule Trustworthy.Banking.Projectors.Accounts do
       interest_rate: event.interest_rate,
       withdrawal_fee: event.withdrawal_fee
     })
-  end
+  end)
 
-  project %Events.MoneyDeposited{account_detail: %{balance: new_balance}} = event, fn multi ->
+  project(%Events.MoneyDeposited{account_detail: %{balance: new_balance}} = event, fn multi ->
     account =
       event.account_uuid
       |> Banking.get_account()
       |> FE.Maybe.unwrap!()
 
     Multi.update(multi, :update_balance, Ecto.Changeset.change(account, balance: new_balance))
-  end
+  end)
 
-  project %Events.FundsTransferredIn{account_detail: %{balance: new_balance}} = event, fn multi ->
+  project(%Events.FundsTransferredIn{account_detail: %{balance: new_balance}} = event, fn multi ->
     account =
       event.account_uuid
       |> Banking.get_account()
       |> FE.Maybe.unwrap!()
 
     Multi.update(multi, :update_balance, Ecto.Changeset.change(account, balance: new_balance))
-  end
+  end)
 
-  project %Events.FundsTransferredOut{account_detail: %{balance: new_balance}} = event, fn multi ->
-    account =
-      event.account_uuid
-      |> Banking.get_account()
-      |> FE.Maybe.unwrap!()
+  project(
+    %Events.FundsTransferredOut{account_detail: %{balance: new_balance}} = event,
+    fn multi ->
+      account =
+        event.account_uuid
+        |> Banking.get_account()
+        |> FE.Maybe.unwrap!()
 
-    Multi.update(multi, :update_balance, Ecto.Changeset.change(account, balance: new_balance))
-  end
+      Multi.update(multi, :update_balance, Ecto.Changeset.change(account, balance: new_balance))
+    end
+  )
 end

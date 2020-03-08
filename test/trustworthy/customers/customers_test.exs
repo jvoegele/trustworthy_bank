@@ -44,7 +44,8 @@ defmodule Trustworthy.CustomersTest do
 
   @tag :integration
   test "should fail when username format is invalid and return error" do
-    assert {:error, :validation_failure, errors} = Customers.register_user(build(:user, username: "j@son"))
+    assert {:error, :validation_failure, errors} =
+             Customers.register_user(build(:user, username: "j@son"))
 
     assert errors == %{username: ["is invalid"]}
   end

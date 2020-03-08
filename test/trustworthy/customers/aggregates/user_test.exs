@@ -8,13 +8,13 @@ defmodule Trustworthy.Customers.Aggregates.UserTest do
     test "should succeed when valid" do
       command = build(:register_user, user_uuid: UUID.uuid4())
 
-      assert_events command, [
+      assert_events(command, [
         %UserRegistered{
           user_uuid: command.user_uuid,
           username: command.username,
-          hashed_password: command.hashed_password,
+          hashed_password: command.hashed_password
         }
-      ]
+      ])
     end
   end
 end

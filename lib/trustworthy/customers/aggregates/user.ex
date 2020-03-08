@@ -27,10 +27,11 @@ defmodule Trustworthy.Customers.Aggregates.User do
   end
 
   def apply(%__MODULE__{} = user, %UserRegistered{} = event) do
-    %__MODULE__{user |
-      uuid: event.user_uuid,
-      username: event.username,
-      hashed_password: event.hashed_password,
+    %__MODULE__{
+      user
+      | uuid: event.user_uuid,
+        username: event.username,
+        hashed_password: event.hashed_password
     }
   end
 end

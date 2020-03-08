@@ -13,7 +13,7 @@ defmodule Trustworthy.Application do
       TrustworthyWeb.Endpoint,
       Trustworthy.Customers.Supervisor,
       Trustworthy.Banking.Supervisor,
-      Trustworthy.Support.Unique,
+      Trustworthy.Support.Unique
     ]
 
     opts = [strategy: :one_for_one, name: Trustworthy.Supervisor]

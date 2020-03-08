@@ -13,7 +13,7 @@ defmodule Trustworthy.Auth do
   def authenticate(username, password) do
     with {:ok, user} <- user_by_username(username) do
       check_password(user, password)
-   end
+    end
   end
 
   def hash_password(password), do: Bcrypt.hashpwsalt(password)

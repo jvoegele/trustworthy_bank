@@ -19,11 +19,12 @@ defmodule TrustworthyWeb.UserControllerTest do
     @tag :web
     test "should not create user and render errors when data is invalid", %{conn: conn} do
       conn = post(conn, Routes.user_path(conn, :create), user: build(:user, username: ""))
+
       assert json_response(conn, 422)["errors"] == %{
-        "username" => [
-          "is invalid",
-        ]
-      }
+               "username" => [
+                 "is invalid"
+               ]
+             }
     end
 
     @tag :web
@@ -32,12 +33,14 @@ defmodule TrustworthyWeb.UserControllerTest do
       {:ok, _user} = fixture(:user)
 
       # attempt to register the same username
-      conn = post(conn, Routes.user_path(conn, :create), user: build(:user, email: "jake2@jake.jake"))
+      conn =
+        post(conn, Routes.user_path(conn, :create), user: build(:user, email: "jake2@jake.jake"))
+
       assert json_response(conn, 422)["errors"] == %{
-        "username" => [
-          "has already been taken",
-        ]
-      }
+               "username" => [
+                 "has already been taken"
+               ]
+             }
     end
   end
 
@@ -49,9 +52,10 @@ defmodule TrustworthyWeb.UserControllerTest do
       token = json["token"]
 
       assert json == %{
-        "username" => "user",
-        "token" => token,
-      }
+               "username" => "user",
+               "token" => token
+             }
+
       refute token == ""
     end
 

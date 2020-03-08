@@ -15,7 +15,9 @@ defmodule TrustworthyWeb.CheckingAccountControllerTest do
   describe "create checking_account" do
     @tag :web
     test "renders checking_account when data is valid", %{conn: conn} do
-      conn = post(conn, Routes.checking_account_path(conn, :create), checking_account: @create_attrs)
+      conn =
+        post(conn, Routes.checking_account_path(conn, :create), checking_account: @create_attrs)
+
       response = json_response(conn, 201)["account"]
       assert response["owner_uuid"] == @create_attrs.customer_uuid
       assert response["balance"] == @create_attrs.initial_balance
@@ -24,7 +26,9 @@ defmodule TrustworthyWeb.CheckingAccountControllerTest do
 
     @tag :web
     test "renders errors when data is invalid", %{conn: conn} do
-      conn = post(conn, Routes.checking_account_path(conn, :create), checking_account: @invalid_attrs)
+      conn =
+        post(conn, Routes.checking_account_path(conn, :create), checking_account: @invalid_attrs)
+
       assert json_response(conn, 422)["errors"] != %{}
     end
   end

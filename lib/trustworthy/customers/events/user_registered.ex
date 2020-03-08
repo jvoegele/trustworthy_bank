@@ -6,10 +6,10 @@ defmodule Trustworthy.Customers.Events.UserRegistered do
   alias Trustworthy.Customers
 
   @type t :: %__MODULE__{
-    user_uuid: Customers.uuid(),
-    username: Customers.username(),
-    hashed_password: String.t()
-  }
+          user_uuid: Customers.uuid(),
+          username: Customers.username(),
+          hashed_password: String.t()
+        }
 
   @derive Jason.Encoder
   defstruct [:user_uuid, :username, :hashed_password]

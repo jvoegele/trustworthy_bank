@@ -7,51 +7,59 @@ defmodule TrustworthyWeb.SessionControllerTest do
 
   describe "authenticate user" do
     setup [
-      :register_user,
+      :register_user
     ]
 
     @tag :web
     test "creates session and renders session when data is valid", %{conn: conn} do
-      conn = post conn, Routes.session_path(conn, :create), user: %{
-        username: "user",
-        password: "p@ssw0rd123"
-      }
+      conn =
+        post conn, Routes.session_path(conn, :create),
+          user: %{
+            username: "user",
+            password: "p@ssw0rd123"
+          }
+
       json = json_response(conn, 201)["user"]
       token = json["token"]
 
       assert json == %{
-        "username" => "user",
-        "token" => token,
-      }
+               "username" => "user",
+               "token" => token
+             }
+
       refute token == ""
     end
 
     @tag :web
     test "does not create session and renders errors when password does not match", %{conn: conn} do
-      conn = post conn, Routes.session_path(conn, :create), user: %{
-        username: "user",
-        password: "invalidpassword"
-      }
+      conn =
+        post conn, Routes.session_path(conn, :create),
+          user: %{
+            username: "user",
+            password: "invalidpassword"
+          }
 
       assert json_response(conn, 422)["errors"] == %{
-        "username or password" => [
-          "is invalid"
-        ]
-      }
+               "username or password" => [
+                 "is invalid"
+               ]
+             }
     end
 
     @tag :web
     test "does not create session and renders errors when user not found", %{conn: conn} do
-      conn = post conn, Routes.session_path(conn, :create), user: %{
-        username: "doesnotexist",
-        password: "p@ssw0rd123"
-      }
+      conn =
+        post conn, Routes.session_path(conn, :create),
+          user: %{
+            username: "doesnotexist",
+            password: "p@ssw0rd123"
+          }
 
       assert json_response(conn, 422)["errors"] == %{
-        "username or password" => [
-          "is invalid"
-        ]
-      }
+               "username or password" => [
+                 "is invalid"
+               ]
+             }
     end
   end
 end

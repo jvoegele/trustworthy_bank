@@ -9,7 +9,7 @@ defmodule Trustworthy.Factory do
       uuid: UUID.uuid4(),
       username: "user",
       password: "p@ssw0rd123",
-      hashed_password: "1fb9c14e934b825a62d15230cc0c2bd1",
+      hashed_password: "1fb9c14e934b825a62d15230cc0c2bd1"
     }
   end
 

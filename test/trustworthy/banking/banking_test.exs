@@ -10,7 +10,10 @@ defmodule Trustworthy.BankingTest do
     @tag :integration
     test "opens new checking account when given valid data" do
       params = %{customer_uuid: UUID.uuid4(), initial_balance: 100 * 100}
-      assert {:ok, %Projections.CheckingAccount{} = account} = Banking.open_checking_account(params)
+
+      assert {:ok, %Projections.CheckingAccount{} = account} =
+               Banking.open_checking_account(params)
+
       assert account.owner == params.customer_uuid
       assert account.balance == 100 * 100
     end
@@ -92,14 +95,14 @@ defmodule Trustworthy.BankingTest do
         %Projections.CheckingAccount{balance: balance} when balance < 100_000 ->
           assert balance == 99_500
       else
-        flunk "funds not transferred out of source account"
+        flunk("funds not transferred out of source account")
       end
 
       case_wait get_account(savings.uuid) do
         %Projections.SavingsAccount{balance: balance} when balance > 100_000 ->
           assert balance == 100_500
       else
-        flunk "funds not transferred into destination account"
+        flunk("funds not transferred into destination account")
       end
     end
   end
