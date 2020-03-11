@@ -20,15 +20,6 @@ defmodule Trustworthy.Banking.ProcessManagers.TransferFunds do
 
   def interested?(_event), do: false
 
-  @spec handle(any, any) :: [
-          %{
-            __struct__:
-              Trustworthy.Banking.Commands.TransferFundsIn
-              | Trustworthy.Banking.Commands.TransferFundsOut,
-            account_uuid: any,
-            amount: any
-          }
-        ]
   def handle(%__MODULE__{}, %Events.FundsTransferRequested{} = event) do
     transfer_in_command = %Commands.TransferFundsIn{
       account_uuid: event.destination_account_uuid,
